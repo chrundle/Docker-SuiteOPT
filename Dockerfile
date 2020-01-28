@@ -11,11 +11,11 @@ ARG PYTHON_VERSION_TAG=3.8.1
 ARG LINK_PYTHON_TO_PYTHON3=1
 
 # Install dependencies for building SuiteSparse and SuiteOPT for C
+#libprotobuf-dev \
+#protobuf-compiler \
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
-        libprotobuf-dev \
-        protobuf-compiler \
         gcc \
         g++ \
         gfortran \
@@ -24,6 +24,7 @@ RUN apt-get update && \
         sudo \
         bash-completion \
         git \
+        subversion \
         vim
 
 # Install Python 3 and pip
@@ -40,7 +41,10 @@ RUN pip3 install \
     scipy
 
 # Install SuiteOPT for Python
-RUN pip3 install SuiteOPT --user
+RUN pip3 install SuiteOPT
+
+# Pull Demo files for SuiteOPT and copy to container
+RUN svn checkout https://github.com/chrundle/python-SuiteOPT/trunk/Demo
 
 # Create user "docker" with sudo powers
 RUN useradd -m docker && \
