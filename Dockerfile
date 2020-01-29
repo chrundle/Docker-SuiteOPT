@@ -41,10 +41,7 @@ RUN pip3 install \
     scipy
 
 # Install SuiteOPT for Python
-RUN pip3 install SuiteOPT
-
-# Pull Demo files for SuiteOPT and copy to container
-RUN svn checkout https://github.com/chrundle/python-SuiteOPT/trunk/Demo
+RUN pip3 install SuiteOPT --verbose
 
 # Create user "docker" with sudo powers
 RUN useradd -m docker && \
@@ -65,5 +62,10 @@ USER docker
 ENV PATH /home/docker/.local/bin:$PATH
 # Avoid first use of sudo warning. c.f. https://askubuntu.com/a/22614/781671
 RUN touch $HOME/.sudo_as_admin_successful
+
+# Add Demo files for SuiteOPT and copy to container
+RUN svn checkout https://github.com/chrundle/python-SuiteOPT/trunk/Demo /home/docker/data/SuiteOPT-Demo/.
+#COPY Demo/. /home/docker/data/SuiteOPT-Demo/.
+
 
 CMD [ "/bin/bash" ]
